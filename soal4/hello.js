@@ -1,3 +1,10 @@
+/*
+    hello.js
+    Display Name and Student's number ID
+
+    Perystito siahaan | https://github.com/peryssiahaan/soal4
+*/
+
 main();
 
 function main() {
