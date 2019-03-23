@@ -35,16 +35,16 @@ function initialParameters()
     DT = 0.0001;
     T = TBEG;
     TDATA = 0.001;
-    NDATA = Math.round(TDATA/T);
+    NDATA = Math.round(TDATA/DT);
     IDATA = NDATA;
     RDISPOSITION = 5;
 
     // Set physical system parameters of mass1 and mass2
     MASS1 = 0.01;
-    DMASS1 = 0.01;
+    DMASS1 = 0.005;
     MASS2 = 0.01;
     DMASS2 = 0.01;
-    GCONST = 0.01;
+    GCONST = 1;
 
     // Set color of mass1 and mass2 
     CLM1 = "#F00";
@@ -56,12 +56,12 @@ function initialParameters()
     VALX1 = -0.01;
     VALY1 = 0;
     VALV1 = 0;
-    VALV1X = VALV1;
+    VALV1X = 0;
     VALV1Y = 0;
     VALX2 = 0.01;
     VALY2 = 0;
     VALV2 = 0;
-    VALV2X = VALV2;
+    VALV2X = 0;
     VALV2Y = 0;
 
     // Set drawing area
@@ -77,6 +77,7 @@ function initialParameters()
 
 function simulate()
 {
+    RDISPOSITION = VALX2 - VALX1;
     if(IDATA == NDATA)
     {
         // Display result on textarea
@@ -105,11 +106,11 @@ function simulate()
     var A2 = -GCONST*MASS1/Math.pow(RDISPOSITION,2);
 
     // Implement Euler Method
-    VALV1 = VALV1 + A1*DT;
-    VALX1 = VALX1 + VALV1*DT;
+    VALV1X = VALV1X + A1*DT;
+    VALX1 = VALX1 + VALV1X*DT;
 
-    VALV2 = VALV2 + A2*DT;
-    VALX2 = VALX2 + VALV2*DT;
+    VALV2X = VALV2X + A2*DT;
+    VALX2 = VALX2 + VALV2X*DT;
 
     // Terminate simulate if condition meets
     if(T >= TEND)
@@ -118,9 +119,16 @@ function simulate()
         startBtn.innerHTML = "Start";
         startBtn.disabled = true;
     } else
+    if(RDISPOSITION < (0.5*DMASS1+0.5*DMASS2))
+    {
+        clearInterval(PROC);
+        startBtn.innerHTML = "Start";
+        startBtn.disabled = true;
+    } else
     {
         T += DT;
         IDATA++;
+        console.log("Text1");
     }
 }
 
